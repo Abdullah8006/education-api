@@ -1,13 +1,12 @@
 package com.abdullah.educationapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -23,5 +22,7 @@ public class Student {
     private String email;
     private String telephone;
     private String address;
+    @OneToMany(mappedBy = "student")
+    List<StudentCourse> courses;
 
 }

@@ -14,24 +14,44 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(StudentNotFoundException.class)
-    public ResponseEntity<Object> handleCityNotFoundException(StudentNotFoundException ex, WebRequest request) {
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "City not found");
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleCityNotFoundException(MethodArgumentNotValidException ex, WebRequest request) {
+    public ResponseEntity<Object> handleInvalidRequestObject(MethodArgumentNotValidException ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", "Invalid request params");
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PathVariableNotFoundException.class)
+    public ResponseEntity<Object> handleInvalidPathParam(PathVariableNotFoundException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "Invalid path params");
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({CourseNotFoundException.class, StudentNotFoundException.class})
+    public ResponseEntity<Object> handleResourceNotFoundException(Exception ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "The resource is not present");
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "Something wrong happened");
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

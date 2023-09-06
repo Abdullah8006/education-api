@@ -21,6 +21,7 @@ public class StudentMapper {
 
     public static StudentResponseDto entityToDto(Student student) {
         StudentResponseDto studentResponseDto = new StudentResponseDto();
+        studentResponseDto.setId(student.getId());
         studentResponseDto.setAddress(student.getAddress());
         studentResponseDto.setEmail(student.getEmail());
         studentResponseDto.setTelephone(student.getTelephone());
