@@ -1,9 +1,8 @@
 package com.abdullah.educationapi.config;
 
-import com.abdullah.educationapi.entity.Course;
-import com.abdullah.educationapi.entity.Student;
-import com.abdullah.educationapi.entity.StudentCourse;
+import com.abdullah.educationapi.entity.*;
 import com.abdullah.educationapi.repository.CourseRepository;
+import com.abdullah.educationapi.repository.RoleRepository;
 import com.abdullah.educationapi.repository.StudentCourseRepository;
 import com.abdullah.educationapi.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +22,7 @@ public class DataLoader implements ApplicationRunner {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final StudentCourseRepository studentCourseRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -45,5 +46,20 @@ public class DataLoader implements ApplicationRunner {
         StudentCourse studentCourse5 = new StudentCourse(5L, s4, course3);
 
         studentCourseRepository.saveAll(List.of(studentCourse1, studentCourse2, studentCourse3, studentCourse4, studentCourse5));
+
+        loadSecurityRoles();
+    }
+
+    private void loadSecurityRoles() {
+        Role roleUser = new Role();
+        roleUser.setName(ERole.ROLE_USER);
+
+        Role roleModerator = new Role();
+        roleModerator.setName(ERole.ROLE_MODERATOR);
+
+        Role roleAdmin = new Role();
+        roleAdmin.setName(ERole.ROLE_ADMIN);
+
+        roleRepository.saveAll(Arrays.asList(roleAdmin, roleUser, roleModerator));
     }
 }
