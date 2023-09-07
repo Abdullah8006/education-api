@@ -34,6 +34,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    // Question statement 1 add-course
     @PostMapping
     public ResponseEntity<CourseResponseDto> saveCourse(@Valid @RequestBody CourseRequestDto courseRequestDto) {
         Course course = CourseMapper.dtoToEntity(courseRequestDto);
@@ -43,6 +44,7 @@ public class CourseController {
         return ResponseEntity.ok(courseResponseDto);
     }
 
+    // Question statement 1 get-courses/get-course
     // Pagination not implemented due to time constraint
     @GetMapping
     public ResponseEntity<List<CourseResponseDto>> getCourse(@RequestParam(required = false) Long id) {
@@ -61,6 +63,7 @@ public class CourseController {
         return ResponseEntity.ok(courseResponse);
     }
 
+    // Question statement 1 update-courses
     @PatchMapping("/{id}")
     public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable Long id, @RequestBody CoursePatchRequestDto coursePatchRequestDto) {
         if(id == null) throw new PathVariableNotFoundException();
@@ -76,6 +79,7 @@ public class CourseController {
         return ResponseEntity.ok(courseResponseDto);
     }
 
+    // Question statement 1 delete-courses
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable Long id) {
         if(id == null) throw new PathVariableNotFoundException();

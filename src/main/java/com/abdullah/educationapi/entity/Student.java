@@ -1,10 +1,7 @@
 package com.abdullah.educationapi.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class Student {
 
     @Id
@@ -22,7 +20,7 @@ public class Student {
     private String email;
     private String telephone;
     private String address;
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     List<StudentCourse> courses;
 
 }
