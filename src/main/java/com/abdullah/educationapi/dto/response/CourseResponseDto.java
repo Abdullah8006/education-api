@@ -1,14 +1,14 @@
 package com.abdullah.educationapi.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CourseResponseDto {
     private Long id;
     private String name;

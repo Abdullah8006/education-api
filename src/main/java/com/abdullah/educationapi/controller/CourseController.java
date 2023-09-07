@@ -15,15 +15,17 @@ import com.abdullah.educationapi.service.CourseService;
 import com.abdullah.educationapi.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,6 +35,10 @@ import java.util.stream.Collectors;
 public class CourseController {
 
     private final CourseService courseService;
+    private final RestTemplate restTemplate;
+
+    @Value("${server.port}")
+    private String serverPort;
 
     // Question statement 1 add-course
     @PostMapping
@@ -66,10 +72,10 @@ public class CourseController {
     // Question statement 1 update-courses
     @PatchMapping("/{id}")
     public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable Long id, @RequestBody CoursePatchRequestDto coursePatchRequestDto) {
-        if(id == null) throw new PathVariableNotFoundException();
+        if (id == null) throw new PathVariableNotFoundException();
 
         Optional<Course> byId = courseService.findById(id);
-        if(byId.isEmpty()) throw new CourseNotFoundException();
+        if (byId.isEmpty()) throw new CourseNotFoundException();
 
         Course course = byId.get();
         course.setName(coursePatchRequestDto.getName());
@@ -82,11 +88,25 @@ public class CourseController {
     // Question statement 1 delete-courses
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable Long id) {
-        if(id == null) throw new PathVariableNotFoundException();
+        if (id == null) throw new PathVariableNotFoundException();
 
         Optional<Course> byId = courseService.findById(id);
-        if(byId.isEmpty()) throw new CourseNotFoundException();
+        if (byId.isEmpty()) throw new CourseNotFoundException();
 
         courseService.delete(byId.get());
+    }
+
+    // Question statement 2-b Consume the REST service for GET courses and display the data
+    @GetMapping("/consume")
+    public ResponseEntity<List<CourseResponseDto>> fetchCourses() {
+        final String URL = "http://localhost:" + serverPort + "/api/v1/courses";
+
+        ResponseEntity<List<CourseResponseDto>> response = restTemplate.exchange(
+                URL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<CourseResponseDto>>(){});
+
+        return ResponseEntity.ok(Objects.requireNonNull(response.getBody()));
     }
 }
