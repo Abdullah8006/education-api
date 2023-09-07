@@ -1,5 +1,10 @@
 Education api
 
+Running the app
+- clone the repo git clone https://github.com/Abdullah8006/education-api.git
+- run the class EducationApiApplication in your fav IDE
+
+
 Note: JWT implementation is in a different branch jwt-implementation
 
 The swagger ui is accessible at http://localhost:8080/swagger-ui/index.html
